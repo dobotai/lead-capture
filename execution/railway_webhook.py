@@ -1,6 +1,7 @@
 """
 Flask webhook for Railway deployment.
 Receives Calendly webhooks and syncs to Close.io.
+Railway auto-deploy trigger.
 """
 
 from flask import Flask, request, jsonify

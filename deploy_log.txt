@@ -1,0 +1,21 @@
++- Modal Deprecation Warning (2025-03-05) ------------------------------------+
+| The `@modal.web_endpoint` decorator has been renamed to                     |
+| `@modal.fastapi_endpoint`.                                                  |
+|                                                                             |
+| Source: C:\Users\arnel\OneDrive\Desktop\DobotAI\Agents\Lead                 |
+| Capture\execution\modal_webhook.py:18                                       |
+|   @modal.web_endpoint(method="POST")                                        |
++-----------------------------------------------------------------------------+
++- Modal Deprecation Warning (2025-03-05) ------------------------------------+
+| The `@modal.web_endpoint` decorator has been renamed to                     |
+| `@modal.fastapi_endpoint`.                                                  |
+|                                                                             |
+| Source: C:\Users\arnel\OneDrive\Desktop\DobotAI\Agents\Lead                 |
+| Capture\execution\modal_webhook.py:166                                      |
+|   @modal.web_endpoint(method="GET")                                         |
++-----------------------------------------------------------------------------+
++- Error ---------------------------------------------------------------------+
+| Web endpoint Functions require `FastAPI` to be installed in their Image.    |
+| This used to happen automatically, but it must now be done explicitly. We   |
+| recommend installing `fastapi` to include useful extensions.                |
++-----------------------------------------------------------------------------+

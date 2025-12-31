@@ -65,9 +65,9 @@ def webhook():
 
             update_data = {
                 'custom': {
-                    'cf_LastBookingDate': event_start,
-                    'cf_MeetingType': event_type,
-                    'cf_BookingSource': 'Calendly'
+                    'cf_5atfPBnhK8RShuB3vErRhcEKcj73kWRGtuYcoG1M0mA': event_start,  # Last Booking Date
+                    'cf_GhW2XZhTbZwgckQ1aOW8KaYZwqyE7jLGljN2NnmgmVv': event_type,  # Meeting Type
+                    'cf_GmuHm8I01gKEZFrsUJdsA9xidS8xtPmiq1k5aaSiRNr': 'Calendly'  # Booking Source
                 }
             }
 
@@ -100,10 +100,11 @@ def webhook():
                     'emails': [{'email': email, 'type': 'office'}]
                 }],
                 'custom': {
-                    'cf_BookingDate': event_start,
-                    'cf_MeetingType': event_type,
-                    'cf_BookingSource': 'Calendly',
-                    'cf_LastBookingDate': event_start
+                    'cf_xQmUYs6tMmS4ptJzxWAWfOqacZeYMsuF86RVycAK85g': event_start,  # Booking Date
+                    'cf_GhW2XZhTbZwgckQ1aOW8KaYZwqyE7jLGljN2NnmgmVv': event_type,  # Meeting Type
+                    'cf_GmuHm8I01gKEZFrsUJdsA9xidS8xtPmiq1k5aaSiRNr': 'Calendly',  # Booking Source
+                    'cf_5atfPBnhK8RShuB3vErRhcEKcj73kWRGtuYcoG1M0mA': event_start,  # Last Booking Date
+                    'cf_8mz1ntiY9tVI97REeFHPw29nZ5ERbsph8TJr34oC9ey': calendly_link  # Calendly Link
                 }
             }
 

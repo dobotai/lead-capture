@@ -99,15 +99,31 @@ def webhook():
 
             session.put(f'{CLOSE_API_URL}/lead/{lead_id}/', json=update_data)
 
-            # Add note
-            note = f"Calendly Booking: {event_type}\nScheduled: {event_start}"
-            if calendly_link:
-                note += f"\nLink: {calendly_link}"
+            # Create meeting activity instead of note
+            from datetime import datetime, timedelta
+            try:
+                starts_at = event_start
+                start_dt = datetime.fromisoformat(event_start.replace('Z', '+00:00'))
+                end_dt = start_dt + timedelta(minutes=30)
+                ends_at = end_dt.isoformat()
 
-            session.post(
-                f'{CLOSE_API_URL}/activity/note/',
-                json={'lead_id': lead_id, 'note': note}
-            )
+                meeting_data = {
+                    'lead_id': lead_id,
+                    'title': event_type or 'Calendly Meeting',
+                    'starts_at': starts_at,
+                    'ends_at': ends_at,
+                    'status': 'upcoming',
+                    'note': f'Booked via Calendly\n\nMeeting Link: {calendly_link}' if calendly_link else 'Booked via Calendly'
+                }
+
+                meeting_resp = session.post(f'{CLOSE_API_URL}/activity/meeting/', json=meeting_data)
+                if meeting_resp.ok:
+                    meeting = meeting_resp.json()
+                    print(f"Created meeting activity: {meeting['id']}")
+                else:
+                    print(f"Failed to create meeting: {meeting_resp.text}")
+            except Exception as e:
+                print(f"Error creating meeting: {e}")
 
             return jsonify({
                 "status": "success",
@@ -159,15 +175,31 @@ def webhook():
                 opp = opp_resp.json()
                 print(f"Created opportunity: {opp['id']} with value $3000")
 
-            # Add note
-            note = f"Calendly Booking: {event_type}\nScheduled: {event_start}"
-            if calendly_link:
-                note += f"\nLink: {calendly_link}"
+            # Create meeting activity instead of note
+            from datetime import datetime, timedelta
+            try:
+                starts_at = event_start
+                start_dt = datetime.fromisoformat(event_start.replace('Z', '+00:00'))
+                end_dt = start_dt + timedelta(minutes=30)
+                ends_at = end_dt.isoformat()
 
-            session.post(
-                f'{CLOSE_API_URL}/activity/note/',
-                json={'lead_id': lead_id, 'note': note}
-            )
+                meeting_data = {
+                    'lead_id': lead_id,
+                    'title': event_type or 'Calendly Meeting',
+                    'starts_at': starts_at,
+                    'ends_at': ends_at,
+                    'status': 'upcoming',
+                    'note': f'Booked via Calendly\n\nMeeting Link: {calendly_link}' if calendly_link else 'Booked via Calendly'
+                }
+
+                meeting_resp = session.post(f'{CLOSE_API_URL}/activity/meeting/', json=meeting_data)
+                if meeting_resp.ok:
+                    meeting = meeting_resp.json()
+                    print(f"Created meeting activity: {meeting['id']}")
+                else:
+                    print(f"Failed to create meeting: {meeting_resp.text}")
+            except Exception as e:
+                print(f"Error creating meeting: {e}")
 
             print(f"Created lead: {lead_id}")
 

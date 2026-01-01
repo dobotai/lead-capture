@@ -99,36 +99,6 @@ def webhook():
 
             session.put(f'{CLOSE_API_URL}/lead/{lead_id}/', json=update_data)
 
-            # Create task for the scheduled meeting (Close.io doesn't allow direct meeting creation)
-            from datetime import datetime, timedelta
-            try:
-                # Parse the meeting time for the task
-                start_dt = datetime.fromisoformat(event_start.replace('Z', '+00:00'))
-
-                task_data = {
-                    'lead_id': lead_id,
-                    'text': f'{event_type} - Scheduled Calendly Meeting',
-                    'due_date': event_start,
-                    'is_complete': False,
-                    '_type': 'lead'
-                }
-
-                task_resp = session.post(f'{CLOSE_API_URL}/task/', json=task_data)
-                if task_resp.ok:
-                    task = task_resp.json()
-                    print(f"Created task for meeting: {task['id']}")
-
-                    # Add a note with meeting details
-                    note_data = {
-                        'lead_id': lead_id,
-                        'note': f'Calendly Meeting Scheduled: {event_type}\n\nTime: {event_start}\nMeeting Link: {calendly_link}' if calendly_link else f'Calendly Meeting Scheduled: {event_type}\n\nTime: {event_start}'
-                    }
-                    session.post(f'{CLOSE_API_URL}/activity/note/', json=note_data)
-                else:
-                    print(f"Failed to create task: {task_resp.text}")
-            except Exception as e:
-                print(f"Error creating task: {e}")
-
             return jsonify({
                 "status": "success",
                 "action": "updated",
@@ -178,36 +148,6 @@ def webhook():
             if opp_resp.ok:
                 opp = opp_resp.json()
                 print(f"Created opportunity: {opp['id']} with value $3000")
-
-            # Create task for the scheduled meeting (Close.io doesn't allow direct meeting creation)
-            from datetime import datetime, timedelta
-            try:
-                # Parse the meeting time for the task
-                start_dt = datetime.fromisoformat(event_start.replace('Z', '+00:00'))
-
-                task_data = {
-                    'lead_id': lead_id,
-                    'text': f'{event_type} - Scheduled Calendly Meeting',
-                    'due_date': event_start,
-                    'is_complete': False,
-                    '_type': 'lead'
-                }
-
-                task_resp = session.post(f'{CLOSE_API_URL}/task/', json=task_data)
-                if task_resp.ok:
-                    task = task_resp.json()
-                    print(f"Created task for meeting: {task['id']}")
-
-                    # Add a note with meeting details
-                    note_data = {
-                        'lead_id': lead_id,
-                        'note': f'Calendly Meeting Scheduled: {event_type}\n\nTime: {event_start}\nMeeting Link: {calendly_link}' if calendly_link else f'Calendly Meeting Scheduled: {event_type}\n\nTime: {event_start}'
-                    }
-                    session.post(f'{CLOSE_API_URL}/activity/note/', json=note_data)
-                else:
-                    print(f"Failed to create task: {task_resp.text}")
-            except Exception as e:
-                print(f"Error creating task: {e}")
 
             print(f"Created lead: {lead_id}")
 

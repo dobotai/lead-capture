@@ -73,6 +73,22 @@ def webhook():
             lead_id = results['data'][0]['id']
             print(f"Updating lead: {lead_id}")
 
+            # Check if we've already processed this exact event (deduplication)
+            notes_resp = session.get(
+                f'{CLOSE_API_URL}/activity/note/',
+                params={'lead_id': lead_id, '_limit': 50}
+            )
+            if notes_resp.ok:
+                notes = notes_resp.json().get('data', [])
+                for note in notes:
+                    if calendly_link and calendly_link in note.get('note', ''):
+                        print(f"Event already processed (found in note), skipping duplicate")
+                        return jsonify({
+                            "status": "success",
+                            "action": "skipped_duplicate",
+                            "lead_id": lead_id
+                        })
+
             update_data = {
                 'custom': {
                     'cf_5atfPBnhK8RShuB3vErRhcEKcj73kWRGtuYcoG1M0mA': event_start,  # Last Booking Date

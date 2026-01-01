@@ -146,6 +146,19 @@ def webhook():
             new_lead = create_resp.json()
             lead_id = new_lead['id']
 
+            # Create opportunity with $3000 value
+            opportunity_data = {
+                'lead_id': lead_id,
+                'status_id': 'stat_qvoNUkHSCsWWoeIanqW8byIpHKTsJtY0CZt8OQYfCDC',  # Call Booked
+                'value': 3000,
+                'value_period': 'one_time',
+                'note': f'Created from Calendly booking: {event_type}'
+            }
+            opp_resp = session.post(f'{CLOSE_API_URL}/opportunity/', json=opportunity_data)
+            if opp_resp.ok:
+                opp = opp_resp.json()
+                print(f"Created opportunity: {opp['id']} with value $3000")
+
             # Add note
             note = f"Calendly Booking: {event_type}\nScheduled: {event_start}"
             if calendly_link:

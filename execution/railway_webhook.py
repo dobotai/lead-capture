@@ -146,11 +146,11 @@ def webhook():
             new_lead = create_resp.json()
             lead_id = new_lead['id']
 
-            # Create opportunity with $3000 value
+            # Create opportunity with $3000 value (Close.io uses cents, so 300000 = $3000)
             opportunity_data = {
                 'lead_id': lead_id,
                 'status_id': 'stat_qvoNUkHSCsWWoeIanqW8byIpHKTsJtY0CZt8OQYfCDC',  # Call Booked
-                'value': 3000,
+                'value': 300000,  # $3000 in cents
                 'value_period': 'one_time',
                 'note': f'Created from Calendly booking: {event_type}'
             }
